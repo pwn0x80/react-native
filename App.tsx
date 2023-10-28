@@ -64,14 +64,22 @@ function App(): JSX.Element {
     MyModule.Hello("aditya");
 
   }
-
+  const callBackTrigger =()=>{
+    MyModule.callback((str:any)=>{console.log(str)});
+      
+  }
   return (
     <View>
       <Button
         onPress={funcTrigger}
-        title="Learn More"
+        title="Trigger Android Bridge"
         color="#841584"
-        accessibilityLabel="Learn more about this purple button"
+        accessibilityLabel=""
+      />
+      <Button
+        onPress={callBackTrigger}
+        title="CallbackTrigger"
+        color="red"
       />
 
     </View>
