@@ -62,12 +62,17 @@ function Section({ children, title }: SectionProps): JSX.Element {
 function App(): JSX.Element {
   const funcTrigger = () => {
     MyModule.Hello("aditya");
-
   }
   const callBackTrigger =()=>{
     MyModule.callback((str:any)=>{console.log(str)});
-      
   }
+  const promiseTrigger = ()=>{
+    MyModule.promiseTrigger().then((str:any)=>{
+      console.log(str)
+    })
+  }
+
+
   return (
     <View>
       <Button
@@ -81,7 +86,11 @@ function App(): JSX.Element {
         title="CallbackTrigger"
         color="red"
       />
-
+      <Button
+      onPress={promiseTrigger}
+      title="Promise Trigger"
+      color="green"
+      />
     </View>
   );
 }

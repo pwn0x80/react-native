@@ -5,6 +5,7 @@ import androidx.annotation.Nullable;
 
 import com.facebook.infer.annotation.Functional;
 import com.facebook.react.bridge.Callback;
+import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
@@ -33,5 +34,8 @@ public class Trigger extends ReactContextBaseJavaModule {
     public void callback(Callback fun){
         fun.invoke("from java Trigger");
     }
-
+    @ReactMethod
+    public void promiseTrigger(Promise ac){
+        ac.resolve("resolved");
+    }
 }
