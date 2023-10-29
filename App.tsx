@@ -5,15 +5,18 @@
  * @format
  */
 
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import type { PropsWithChildren } from 'react';
 import {
   Button,
+  findNodeHandle,
+  requireNativeComponent,
   SafeAreaView,
   ScrollView,
   StatusBar,
   StyleSheet,
   Text,
+  UIManager,
   useColorScheme,
   View,
 } from 'react-native';
@@ -27,51 +30,62 @@ import {
 } from 'react-native/Libraries/NewAppScreen';
 
 import { NativeModules } from "react-native";
+
+const MyViewMangerFragment = requireNativeComponent('MyViewManager');
 const { MyModule } = NativeModules;
 type SectionProps = PropsWithChildren<{
   title: string;
 }>;
 
-function Section({ children, title }: SectionProps): JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
 
-  return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
+const createFragment = (viewId: any) =>
+  UIManager.dispatchViewManagerCommand(
+    viewId,
+    "1",
+    [viewId],
   );
-}
-
 function App(): JSX.Element {
+  const ref = useRef(null);
+  useEffect(() => {
+    if (ref.current === null) return
+    const viewId = findNodeHandle(ref.current);
+    createFragment(viewId);
+  }, [ref]);
+
   const funcTrigger = () => {
     MyModule.Hello("aditya");
   }
-  const callBackTrigger =()=>{
-    MyModule.callback((str:any)=>{console.log(str)});
+  const callBackTrigger = () => {
+    MyModule.callback((str: any) => { console.log(str) });
   }
-  const promiseTrigger = ()=>{
-    MyModule.promiseTrigger().then((str:any)=>{
+  const promiseTrigger = () => {
+    MyModule.promiseTrigger().then((str: any) => {
       console.log(str)
     })
-  }
 
+  }
+  // const activityTrigger= ()=>{
+  // MyModule.startActivity();
+  // }
+  //
+  //
+  const [state, setState] = useState(false);
+  function trigger() {
+    setState(state => !state);
+  }
+  if (state == true) {
+    return (
+      <View>
+        <Text>Fragment Trigger</Text>
+        {
+          <MyViewMangerFragment
+            ref={ref}
+          />
+        }
+
+      </View>
+    )
+  }
 
   return (
     <View>
@@ -87,9 +101,14 @@ function App(): JSX.Element {
         color="red"
       />
       <Button
-      onPress={promiseTrigger}
-      title="Promise Trigger"
-      color="green"
+        onPress={promiseTrigger}
+        title="Promise Trigger"
+        color="green"
+      />
+      <Button
+        onPress={trigger}
+        title="Fragment Trigger"
+        color="grey"
       />
     </View>
   );
