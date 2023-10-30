@@ -62,7 +62,10 @@ function App(): JSX.Element {
     MyModule.promiseTrigger().then((str: any) => {
       console.log(str)
     })
+  }
 
+  const activityTriggerFunc = () => {
+    MyModule.activityTrigger();
   }
   // const activityTrigger= ()=>{
   // MyModule.startActivity();
@@ -110,6 +113,12 @@ function App(): JSX.Element {
         title="Fragment Trigger"
         color="grey"
       />
+      <Button
+        onPress={activityTriggerFunc}
+        title="Activity Trigger"
+        color="grey"
+      />
+
     </View>
   );
 }
