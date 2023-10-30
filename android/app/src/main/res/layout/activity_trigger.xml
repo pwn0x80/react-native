@@ -4,13 +4,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center"
+    android:orientation="vertical"
+    > <!-- Change orientation to vertical -->
 
-    tools:context=".ActivityTrigger">
+    <androidx.fragment.app.FragmentContainerView
+        android:name="com.awesomeproject.firstFragment"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:id="@+id/fragment_trigger"
+        tools:layout="@layout/fragment_first" />
 
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="138dp"
-        android:gravity="center"
+        android:layout_height="300dp"
         android:text="Activity Trigger" />
 </LinearLayout>
